@@ -50,4 +50,41 @@
 .tm-loading { display:inline-flex; align-items:center; gap:9px; color:var(--tm-muted); }
 .tm-spinner { width:18px; height:18px; border:3px solid var(--tm-border); border-top-color:var(--tm-primary); border-radius:50%; animation:tm-spin .8s linear infinite; }
 @keyframes tm-spin { to { transform:rotate(360deg); } }
-@media (max-width:800px) { .tm-sidebar-layout { grid-template-columns:1fr; } .tm-sidebar-toggle { display:inline-flex; } .tm-sidebar { width:100%; } }
+
+/* TecnoMath UI 2.0 — premium gaming layer */
+.tm-card,.tm-panel,.tm-stat,.tm-game-card,.tm-sidebar { position:relative; isolation:isolate; }
+.tm-card::before,.tm-game-card::before { content:""; position:absolute; inset:0; pointer-events:none; border-radius:inherit; background:linear-gradient(135deg,rgba(255,255,255,.28),transparent 35%); opacity:.55; z-index:-1; }
+.tm-card:hover,.tm-panel:hover,.tm-stat:hover,.tm-game-card:hover { transform:translateY(-3px); box-shadow:0 0 0 1px color-mix(in srgb,var(--tm-primary) 12%,transparent),0 18px 45px rgba(15,23,42,.10); }
+.tm-btn { position:relative; overflow:hidden; }
+.tm-btn::after { content:""; position:absolute; inset:0; background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.25) 50%,transparent 75%); transform:translateX(-130%); transition:transform 500ms ease; }
+.tm-btn:hover::after { transform:translateX(130%); }
+.tm-btn-primary { background:linear-gradient(135deg,#6c5ce7 0%,#8b7cf6 52%,#00b894 100%); box-shadow:0 8px 22px color-mix(in srgb,var(--tm-primary) 25%,transparent); }
+.tm-btn-primary:hover { box-shadow:0 12px 28px color-mix(in srgb,var(--tm-primary) 32%,transparent); }
+.tm-hero-card { padding:clamp(24px,4vw,42px); color:#fff; background:linear-gradient(135deg,#6c5ce7 0%,#8b7cf6 52%,#00b894 100%); border:0; border-radius:var(--tm-radius-lg); box-shadow:0 22px 50px color-mix(in srgb,var(--tm-primary) 25%,transparent); overflow:hidden; }
+.tm-hero-card::after { content:""; position:absolute; width:260px; height:260px; right:-80px; top:-110px; border-radius:50%; background:rgba(255,255,255,.13); }
+.tm-glass { background:color-mix(in srgb,var(--tm-surface) 76%,transparent); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid color-mix(in srgb,var(--tm-border) 75%,transparent); }
+.tm-level-badge { display:inline-flex; align-items:center; gap:7px; padding:6px 11px; border-radius:999px; color:#fff; background:linear-gradient(135deg,#6c5ce7,#00b894); font-weight:900; font-size:.82rem; box-shadow:0 7px 18px color-mix(in srgb,var(--tm-primary) 25%,transparent); }
+.tm-progress-xl { height:14px; }
+.tm-progress-glow .tm-progress-bar { background:linear-gradient(90deg,#6c5ce7,#8b7cf6,#00b894); box-shadow:0 0 14px color-mix(in srgb,var(--tm-primary) 50%,transparent); }
+.tm-xp-pop { animation:tm-xp-pop 600ms cubic-bezier(.2,.8,.2,1); }
+@keyframes tm-xp-pop { 0%{transform:scale(.75);opacity:.2} 60%{transform:scale(1.12);opacity:1} 100%{transform:scale(1)} }
+.tm-skeleton { min-height:16px; border-radius:8px; background:linear-gradient(90deg,var(--tm-border) 25%,color-mix(in srgb,var(--tm-surface) 75%,var(--tm-border)) 50%,var(--tm-border) 75%); background-size:200% 100%; animation:tm-skeleton 1.2s infinite linear; }
+@keyframes tm-skeleton { to { background-position:-200% 0; } }
+.tm-empty { display:grid; place-items:center; gap:8px; min-height:180px; padding:28px; text-align:center; color:var(--tm-muted); border:1px dashed var(--tm-border); border-radius:var(--tm-radius-md); background:linear-gradient(135deg,color-mix(in srgb,var(--tm-primary) 12%,var(--tm-surface)),color-mix(in srgb,var(--tm-secondary) 8%,var(--tm-surface))); }
+.tm-empty-icon { font-size:2.5rem; }
+.tm-notification-dot { width:9px; height:9px; border-radius:50%; background:var(--tm-danger); box-shadow:0 0 0 4px color-mix(in srgb,var(--tm-danger) 15%,transparent); }
+.tm-streak { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:12px; background:color-mix(in srgb,var(--tm-accent) 18%,var(--tm-surface)); border:1px solid color-mix(in srgb,var(--tm-accent) 35%,var(--tm-border)); font-weight:900; }
+.tm-achievement { display:flex; align-items:center; gap:12px; padding:12px; border:1px solid var(--tm-border); border-radius:14px; background:var(--tm-surface); }
+.tm-achievement-icon { width:46px; height:46px; flex:0 0 auto; display:grid; place-items:center; border-radius:13px; background:linear-gradient(135deg,color-mix(in srgb,var(--tm-primary) 12%,var(--tm-surface)),color-mix(in srgb,var(--tm-secondary) 8%,var(--tm-surface))); font-size:1.35rem; }
+.tm-ranking-row { transition:transform 180ms ease,background 180ms ease; }
+.tm-ranking-row:hover { transform:translateX(3px); background:color-mix(in srgb,var(--tm-primary) 5%,var(--tm-surface)); }
+.tm-rank-medal { font-size:1.25rem; }
+.tm-bottom-nav { display:none; position:fixed; left:10px; right:10px; bottom:10px; z-index:900; padding:7px; border-radius:18px; background:color-mix(in srgb,var(--tm-surface) 88%,transparent); backdrop-filter:blur(18px); border:1px solid var(--tm-border); box-shadow:var(--tm-shadow-md); grid-template-columns:repeat(5,1fr); }
+.tm-bottom-nav a { display:grid; place-items:center; gap:2px; min-height:48px; color:var(--tm-muted); text-decoration:none; border-radius:12px; font-size:.72rem; font-weight:800; }
+.tm-bottom-nav a:hover,.tm-bottom-nav a.is-active { color:var(--tm-primary); background:color-mix(in srgb,var(--tm-primary) 9%,var(--tm-surface)); }
+.tm-tooltip { position:relative; }
+.tm-tooltip[data-tooltip]::after { content:attr(data-tooltip); position:absolute; left:50%; bottom:calc(100% + 8px); transform:translate(-50%,4px); opacity:0; pointer-events:none; padding:6px 9px; border-radius:8px; white-space:nowrap; background:#111827; color:#fff; font-size:.75rem; font-weight:700; transition:opacity 160ms ease,transform 160ms ease; }
+.tm-tooltip:hover::after,.tm-tooltip:focus-visible::after { opacity:1; transform:translate(-50%,0); }
+@media (max-width:800px) { .tm-sidebar-layout{grid-template-columns:1fr}.tm-sidebar-toggle{display:inline-flex}.tm-sidebar{width:100%;} }
+@media (max-width:640px) { .tm-bottom-nav{display:grid;} body{padding-bottom:78px;} .tm-hero-card{border-radius:16px;} }
+@media (prefers-reduced-motion:reduce) { .tm-card:hover,.tm-panel:hover,.tm-stat:hover,.tm-game-card:hover,.tm-ranking-row:hover{transform:none;} }
