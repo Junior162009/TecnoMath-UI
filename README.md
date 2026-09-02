@@ -8,19 +8,11 @@ Sistema visual reutilizable para TecnoMath y sus juegos web.
 - `css/components.css` — paneles, estadísticas, tablas, modales, alertas, avatares y toasts.
 - `css/responsive.css` — utilidades responsive para móvil y tablet.
 - `css/themes.css` — soporte de tema claro/oscuro.
-- `js/tecnomath-ui.js` — tema, toasts y modales.
+- `js/tecnomath-ui.js` — tema, toasts, modales, navegación, tabs y progreso.
 
 ## Uso
 
-Incluye las hojas CSS y el JS en cualquier página:
-
-```html
-<link rel="stylesheet" href="css/tecnomath-ui.css">
-<link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/responsive.css">
-<link rel="stylesheet" href="css/themes.css">
-<script defer src="js/tecnomath-ui.js"></script>
-```
+Incluye las hojas CSS y el JS en cualquier página.
 
 Ejemplo de botón:
 
@@ -49,3 +41,5 @@ Botón de tema:
 2. Adoptar los componentes de forma progresiva.
 3. Mantener accesibilidad, responsive y soporte para movimiento reducido.
 4. Centralizar decisiones visuales para que TecnoMath tenga una identidad consistente.
+
+> CI: prueba de despliegue de GitHub Pages.
