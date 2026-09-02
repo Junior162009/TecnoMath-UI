@@ -1,5 +1,4 @@
 :root[data-theme="dark"], body.tm-dark {
-  /* Modo oscuro: carbón suave, superficies elevadas y acentos con contraste AA. */
   --tm-primary: #8fb8ea;
   --tm-primary-hover: #b0cdf2;
   --tm-secondary: #79c69b;
@@ -8,90 +7,67 @@
   --tm-danger: #ef8b87;
   --tm-warning: #e5a46c;
   --tm-info: #86b7e5;
-  --tm-bg: #111315;
-  --tm-surface: #1b1f23;
-  --tm-surface-2: #252a30;
-  --tm-text: #f5f7f9;
+  --tm-bg: #0d0f11;
+  --tm-surface: #171a1e;
+  --tm-surface-2: #22272e;
+  --tm-text: #ffffff;
   --tm-muted: #b8c0c8;
-  --tm-border: #3b434c;
-  --tm-shadow-sm: 0 2px 8px rgba(0,0,0,.30);
-  --tm-shadow-md: 0 12px 30px rgba(0,0,0,.46);
+  --tm-border: #343b44;
+  --tm-shadow-sm: 0 2px 8px rgba(0,0,0,.35);
+  --tm-shadow-md: 0 12px 30px rgba(0,0,0,.52);
 }
 
-.tm-theme-toggle {
-  border: 1px solid var(--tm-border);
-  background: var(--tm-surface);
-  color: var(--tm-text);
-  border-radius: 999px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font: inherit;
-  font-weight: 750;
+/* REGLA GLOBAL: en oscuro ninguna superficie de la app debe quedarse blanca. */
+:root[data-theme="dark"] body, body.tm-dark { background:var(--tm-bg); color:var(--tm-text); }
+:root[data-theme="dark"] .tm-card, :root[data-theme="dark"] .tm-panel, :root[data-theme="dark"] .tm-stat,
+:root[data-theme="dark"] .tm-modal-content, :root[data-theme="dark"] .tm-dropdown-menu, :root[data-theme="dark"] .tm-sidebar,
+:root[data-theme="dark"] .tm-bottom-nav, :root[data-theme="dark"] .tm-table-wrap, :root[data-theme="dark"] .game-card,
+:root[data-theme="dark"] .continue-side, :root[data-theme="dark"] .ach, :root[data-theme="dark"] .floating-card,
+body.tm-dark .tm-card, body.tm-dark .tm-panel, body.tm-dark .tm-stat, body.tm-dark .tm-modal-content,
+body.tm-dark .tm-dropdown-menu, body.tm-dark .tm-sidebar, body.tm-dark .tm-bottom-nav, body.tm-dark .tm-table-wrap,
+body.tm-dark .game-card, body.tm-dark .continue-side, body.tm-dark .ach, body.tm-dark .floating-card {
+  background:var(--tm-surface) !important; color:var(--tm-text); border-color:var(--tm-border);
 }
+:root[data-theme="dark"] .mini-stat, :root[data-theme="dark"] .ach-icon, :root[data-theme="dark"] .tm-empty,
+body.tm-dark .mini-stat, body.tm-dark .ach-icon, body.tm-dark .tm-empty { background:var(--tm-surface-2) !important; color:var(--tm-text); }
+
+.tm-theme-toggle { border:1px solid var(--tm-border); background:var(--tm-surface); color:var(--tm-text); border-radius:999px; padding:8px 12px; cursor:pointer; font:inherit; font-weight:750; }
 .tm-theme-toggle:focus-visible { outline:3px solid color-mix(in srgb,var(--tm-primary) 55%,transparent); outline-offset:3px; }
 
-/* Componentes semánticos */
-body.tm-dark .tm-badge-success, :root[data-theme="dark"] .tm-badge-success { background:#173827; color:#bce8ce; }
-body.tm-dark .tm-badge-warning, :root[data-theme="dark"] .tm-badge-warning { background:#3d2d1b; color:#f8d49f; }
-body.tm-dark .tm-badge-danger, :root[data-theme="dark"] .tm-badge-danger { background:#422322; color:#ffbdb9; }
-body.tm-dark .tm-badge-info, :root[data-theme="dark"] .tm-badge-info { background:#1d3348; color:#c2ddf5; }
-body.tm-dark .tm-alert, :root[data-theme="dark"] .tm-alert { background:var(--tm-surface); color:var(--tm-text); border-color:var(--tm-border); }
-body.tm-dark .tm-alert-info, :root[data-theme="dark"] .tm-alert-info { background:#1c3449; color:#c8e0f7; border-color:#42627f; }
-body.tm-dark .tm-alert-success, :root[data-theme="dark"] .tm-alert-success { background:#193829; color:#c4ead2; border-color:#3e7558; }
-body.tm-dark .tm-alert-warning, :root[data-theme="dark"] .tm-alert-warning { background:#402e1c; color:#f8d3a3; border-color:#7b5a38; }
-body.tm-dark .tm-alert-danger, :root[data-theme="dark"] .tm-alert-danger { background:#432423; color:#ffc5c1; border-color:#814b48; }
-body.tm-dark .tm-table th, :root[data-theme="dark"] .tm-table th { background:var(--tm-surface-2); color:var(--tm-muted); }
-body.tm-dark .tm-table, body.tm-dark .tm-table-wrap, :root[data-theme="dark"] .tm-table, :root[data-theme="dark"] .tm-table-wrap { background:var(--tm-surface); }
-body.tm-dark .tm-empty, :root[data-theme="dark"] .tm-empty { background:var(--tm-surface-2); }
-body.tm-dark .tm-tooltip[data-tooltip]::after, :root[data-theme="dark"] .tm-tooltip[data-tooltip]::after { background:#f5f7f9; color:#111315; }
+:root[data-theme="dark"] a, body.tm-dark a { color:var(--tm-primary); }
+:root[data-theme="dark"] a:hover, body.tm-dark a:hover { color:var(--tm-primary-hover); }
+:root[data-theme="dark"] .tm-btn-ghost, body.tm-dark .tm-btn-ghost { background:var(--tm-surface) !important; color:var(--tm-primary); border-color:var(--tm-border); }
+:root[data-theme="dark"] .tm-btn-ghost:hover, body.tm-dark .tm-btn-ghost:hover { background:var(--tm-surface-2) !important; }
+:root[data-theme="dark"] .tm-input, :root[data-theme="dark"] .tm-select, :root[data-theme="dark"] .tm-textarea,
+body.tm-dark .tm-input, body.tm-dark .tm-select, body.tm-dark .tm-textarea { background:var(--tm-surface) !important; color:var(--tm-text); border-color:var(--tm-border); }
 
-/* No usar gris sobre gris: enlaces, datos y controles conservan contraste. */
-body.tm-dark a, :root[data-theme="dark"] a { color:var(--tm-primary); }
-body.tm-dark a:hover, :root[data-theme="dark"] a:hover { color:var(--tm-primary-hover); }
-body.tm-dark .tm-btn-ghost, :root[data-theme="dark"] .tm-btn-ghost { background:var(--tm-surface); color:var(--tm-primary); border-color:var(--tm-border); }
-body.tm-dark .tm-btn-ghost:hover, :root[data-theme="dark"] .tm-btn-ghost:hover { background:var(--tm-surface-2); }
-body.tm-dark .tm-input, body.tm-dark .tm-select, body.tm-dark .tm-textarea, :root[data-theme="dark"] .tm-input, :root[data-theme="dark"] .tm-select, :root[data-theme="dark"] .tm-textarea { background:var(--tm-surface); color:var(--tm-text); border-color:var(--tm-border); }
-body.tm-dark .tm-input::placeholder, body.tm-dark .tm-textarea::placeholder, :root[data-theme="dark"] .tm-input::placeholder, :root[data-theme="dark"] .tm-textarea::placeholder { color:#9ca6b0; }
+:root[data-theme="dark"] .tm-badge-success, body.tm-dark .tm-badge-success { background:#173827; color:#bce8ce; }
+:root[data-theme="dark"] .tm-badge-warning, body.tm-dark .tm-badge-warning { background:#3d2d1b; color:#f8d49f; }
+:root[data-theme="dark"] .tm-badge-danger, body.tm-dark .tm-badge-danger { background:#422322; color:#ffbdb9; }
+:root[data-theme="dark"] .tm-badge-info, body.tm-dark .tm-badge-info { background:#1d3348; color:#c2ddf5; }
 
-/* Overrides para páginas que tengan colores de superficie escritos directamente. */
-body.tm-dark .tm-card, body.tm-dark .tm-panel, body.tm-dark .tm-stat, body.tm-dark .tm-modal-content, body.tm-dark .tm-dropdown-menu,
-body.tm-dark .tm-sidebar, body.tm-dark .tm-bottom-nav, body.tm-dark .tm-table-wrap,
-body.tm-dark .game-card, body.tm-dark .continue-side, body.tm-dark .ach,
-body.tm-dark .floating-card { background:var(--tm-surface); color:var(--tm-text); border-color:var(--tm-border); }
-body.tm-dark .tm-card:hover, body.tm-dark .game-card:hover { border-color:#53606c; }
-body.tm-dark .tm-muted, body.tm-dark small, body.tm-dark .section-head p, body.tm-dark .game-info p,
-body.tm-dark .game-meta small, body.tm-dark .profile-top p, body.tm-dark .continue-body p { color:var(--tm-muted); }
-body.tm-dark .tm-progress-track, body.tm-dark .progress-line { background:#30363d; }
-body.tm-dark .tm-empty, body.tm-dark .mini-stat, body.tm-dark .ach-icon { background:var(--tm-surface-2); color:var(--tm-text); }
-body.tm-dark .app-nav { background:rgba(17,19,21,.94) !important; border-color:var(--tm-border); }
-body.tm-dark .app-links a { color:var(--tm-muted); }
-body.tm-dark .app-links a:hover, body.tm-dark .app-links a.active { background:var(--tm-surface-2); color:var(--tm-text); }
-body.tm-dark .footer-app { color:var(--tm-muted); }
-body.tm-dark .footer-app strong { color:var(--tm-text); }
+:root[data-theme="dark"] .tm-alert, body.tm-dark .tm-alert { background:var(--tm-surface); color:var(--tm-text); border-color:var(--tm-border); }
+:root[data-theme="dark"] .tm-table th, body.tm-dark .tm-table th { background:var(--tm-surface-2); color:var(--tm-muted); }
+:root[data-theme="dark"] .tm-progress-track, :root[data-theme="dark"] .progress-line,
+body.tm-dark .tm-progress-track, body.tm-dark .progress-line { background:#2b3138; }
 
-/* Showcase: reemplaza fondos claros hardcodeados sin cambiar su identidad. */
-body.tm-dark .hero-panel { background:#101f33; }
-body.tm-dark .hero-art { background:#1f5791; }
-body.tm-dark .floating-card { box-shadow:0 14px 30px rgba(0,0,0,.42); }
-body.tm-dark .continue-cover { background:#276e50; }
-body.tm-dark .game-image.math { background:#245a9e; }
-body.tm-dark .game-image.kingdom { background:#286d50; }
-body.tm-dark .game-image.flags { background:#704a28; }
-body.tm-dark .game-badge { background:#f5f7f9; color:#182027; }
-body.tm-dark .profile-avatar { background:#b98f22; }
-body.tm-dark .social-card { background:#10243b; border-color:#244665; }
-body.tm-dark .rank-item { background:rgba(255,255,255,.08); }
+/* Navegación y showcase */
+:root[data-theme="dark"] .app-nav, body.tm-dark .app-nav { background:rgba(13,15,17,.96) !important; border-color:var(--tm-border); }
+:root[data-theme="dark"] .app-links a, body.tm-dark .app-links a { color:var(--tm-muted); }
+:root[data-theme="dark"] .app-links a:hover, :root[data-theme="dark"] .app-links a.active,
+body.tm-dark .app-links a:hover, body.tm-dark .app-links a.active { background:var(--tm-surface-2) !important; color:var(--tm-text); }
+:root[data-theme="dark"] .hero-panel, body.tm-dark .hero-panel { background:#101d2c; }
+:root[data-theme="dark"] .hero-art, body.tm-dark .hero-art { background:#1d4f82; }
+:root[data-theme="dark"] .continue-cover, body.tm-dark .continue-cover { background:#245f46; }
+:root[data-theme="dark"] .game-image.math, body.tm-dark .game-image.math { background:#1e518d; }
+:root[data-theme="dark"] .game-image.kingdom, body.tm-dark .game-image.kingdom { background:#246348; }
+:root[data-theme="dark"] .game-image.flags, body.tm-dark .game-image.flags { background:#684424; }
+:root[data-theme="dark"] .game-badge, body.tm-dark .game-badge { background:var(--tm-surface-2) !important; color:var(--tm-text); }
+:root[data-theme="dark"] .social-card, body.tm-dark .social-card { background:#10243b !important; border-color:#244665; }
+:root[data-theme="dark"] .rank-item, body.tm-dark .rank-item { background:rgba(255,255,255,.07); }
 
-/* Patrón del fondo: se mantiene visible pero más discreto en oscuro. */
-body.tm-dark.tm-pattern-dots, body.tm-dark[data-tm-pattern="dots"] { background-color:var(--tm-bg); }
-body.tm-dark.tm-pattern-grid, body.tm-dark[data-tm-pattern="grid"] { background-color:var(--tm-bg); }
-body.tm-dark.tm-pattern-diagonal, body.tm-dark[data-tm-pattern="diagonal"] { background-color:var(--tm-bg); }
-
-/* Evita parpadeo visual al alternar y respeta accesibilidad. */
+:root[data-theme="dark"] .footer-app strong, body.tm-dark .footer-app strong { color:#fff; }
 html[data-theme="dark"] { color-scheme:dark; }
 html[data-theme="light"] { color-scheme:light; }
-body.tm-dark { color-scheme:dark; }
 
-@media (prefers-reduced-motion: reduce) {
-  body.tm-dark .tm-card, body.tm-dark .game-card, body.tm-dark .tm-btn { transition:none !important; }
-}
+@media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
