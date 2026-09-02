@@ -1,0 +1,13 @@
+@media (max-width: 900px) {
+  .tm-stack-md { flex-direction:column; align-items:stretch; }
+  .tm-hide-md { display:none !important; }
+}
+@media (max-width: 640px) {
+  .tm-container { width:calc(100% - 20px); }
+  .tm-stack-sm { flex-direction:column; align-items:stretch; }
+  .tm-hide-sm { display:none !important; }
+  .tm-full-sm { width:100% !important; }
+  .tm-panel,.tm-card { padding:16px; }
+  .tm-modal { padding:10px; }
+  .tm-modal-dialog { padding:18px; border-radius:16px; }
+}
