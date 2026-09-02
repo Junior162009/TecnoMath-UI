@@ -2,25 +2,67 @@
   'use strict';
 
   const THEME_KEY = 'tecnomath:theme';
+  const root = document.documentElement;
 
-  function applyTheme(theme) {
+  function getSystemTheme() {
+    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function saveTheme(value) {
+    try { localStorage.setItem(THEME_KEY, value); } catch (_) { /* storage may be blocked */ }
+  }
+
+  function readSavedTheme() {
+    try {
+      const saved = localStorage.getItem(THEME_KEY);
+      return saved === 'dark' || saved === 'light' ? saved : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function applyTheme(theme, persist = true) {
     const value = theme === 'dark' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = value;
-    document.body.classList.toggle('tm-dark', value === 'dark');
-    localStorage.setItem(THEME_KEY, value);
+    root.dataset.theme = value;
+    root.style.colorScheme = value;
+
+    // body puede no existir todavía cuando el script se carga.
+    if (document.body) document.body.classList.toggle('tm-dark', value === 'dark');
+
+    if (persist) saveTheme(value);
+
     document.querySelectorAll('[data-tm-theme-toggle]').forEach((button) => {
-      button.setAttribute('aria-pressed', String(value === 'dark'));
-      button.textContent = value === 'dark' ? '☀️ Claro' : '🌙 Oscuro';
+      const isDark = value === 'dark';
+      button.setAttribute('aria-pressed', String(isDark));
+      button.setAttribute('aria-label', isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+      button.setAttribute('title', isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+      button.textContent = isDark ? '☀️ Claro' : '🌙 Oscuro';
     });
   }
 
   function initTheme() {
-    const saved = localStorage.getItem(THEME_KEY);
-    const preferred = window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    applyTheme(saved || preferred);
+    const saved = readSavedTheme();
+    applyTheme(saved || getSystemTheme(), false);
+
     document.querySelectorAll('[data-tm-theme-toggle]').forEach((button) => {
-      button.addEventListener('click', () => applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
+      if (button.dataset.tmThemeReady === 'true') return;
+      button.dataset.tmThemeReady = 'true';
+      button.addEventListener('click', () => {
+        const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        applyTheme(next, true);
+      });
     });
+
+    const media = window.matchMedia?.('(prefers-color-scheme: dark)');
+    media?.addEventListener?.('change', (event) => {
+      // Si el usuario eligió manualmente un tema, respetarlo.
+      if (!readSavedTheme()) applyTheme(event.matches ? 'dark' : 'light', false);
+    });
+  }
+
+  function syncBodyTheme() {
+    if (root.dataset.theme === 'dark') document.body.classList.add('tm-dark');
+    else document.body.classList.remove('tm-dark');
   }
 
   function toast(message, type = 'info', duration = 3200) {
@@ -102,6 +144,7 @@
 
   window.TecnoMathUI = { applyTheme, toast, initModals, initDropdowns, initTabs, initProgress, initSidebar };
   document.addEventListener('DOMContentLoaded', () => {
+    syncBodyTheme();
     initTheme(); initModals(); initDropdowns(); initTabs(); initProgress(); initSidebar();
   });
 })();
