@@ -8,9 +8,11 @@
   const GAME_BASE='https://tecnomath.online/';
   const GAME_ROUTES={
     'Math Battle':'games/jinete11°/index.html',
+    'Math Battle — Beta':'games/jinete11°/index.html',
     'Reino Pixelado':'games/jolberth11°/index.html',
     'BanderQuiz':'games/laura10°/index.html',
     'Atrapa el Número':'games/atrapa-el-n-mero--P053Fq81cfDss2EU5hY/index.html',
+    'Atrapa El Número':'games/atrapa-el-n-mero--P053Fq81cfDss2EU5hY/index.html',
     'Cookie Clicker':'games/cookie-clicker/index.html'
   };
 
@@ -22,8 +24,6 @@
   function openGame(name){
     const route=GAME_ROUTES[name];
     if(!route)return false;
-    // URL absoluta: así los paths relativos internos del juego se resuelven
-    // contra MindMathArcade y no contra TecnoMath-UI.
     window.location.assign(new URL(route,GAME_BASE).href);
     return true;
   }
@@ -58,6 +58,15 @@
   function initProgress(){document.querySelectorAll('[data-tm-progress]').forEach(b=>{const v=Math.max(0,Math.min(100,Number(b.dataset.tmProgress)||0));b.style.width=`${v}%`;b.setAttribute('aria-valuenow',String(v))})}
   function initSidebar(){document.querySelectorAll('[data-tm-sidebar-toggle]').forEach(b=>b.addEventListener('click',()=>{const t=document.getElementById(b.dataset.tmSidebarToggle);t?.classList.toggle('is-open');b.setAttribute('aria-expanded',String(t?.classList.contains('is-open')))}))}
 
-  window.TecnoMathUI={applyTheme,toast,initModals,initDropdowns,initTabs,initProgress,initSidebar,initGameLinks,openGame,GAME_ROUTES};
-  document.addEventListener('DOMContentLoaded',()=>{initTheme();initModals();initDropdowns();initTabs();initProgress();initSidebar();initGameLinks()});
+  function loadLiveData(){
+    if(document.querySelector('script[data-tecnomath-live-data]'))return;
+    const s=document.createElement('script');
+    s.src='js/tecnomath-data.js?v=1';
+    s.async=true;
+    s.dataset.tecnomathLiveData='true';
+    document.head.appendChild(s);
+  }
+
+  window.TecnoMathUI={applyTheme,toast,initModals,initDropdowns,initTabs,initProgress,initSidebar,initGameLinks,openGame,GAME_ROUTES,loadLiveData};
+  document.addEventListener('DOMContentLoaded',()=>{initTheme();initModals();initDropdowns();initTabs();initProgress();initSidebar();initGameLinks();loadLiveData()});
 })();
