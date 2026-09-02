@@ -1,0 +1,11 @@
+:root[data-theme="dark"], body.tm-dark {
+  --tm-bg:#0f172a;
+  --tm-surface:#111827;
+  --tm-text:#f3f4f6;
+  --tm-muted:#9ca3af;
+  --tm-border:#263244;
+  --tm-shadow-sm:0 2px 8px rgba(0,0,0,.2);
+  --tm-shadow-md:0 10px 30px rgba(0,0,0,.3);
+}
+
+.tm-theme-toggle { border:1px solid var(--tm-border); background:var(--tm-surface); color:var(--tm-text); border-radius:999px; padding:8px 12px; cursor:pointer; font:inherit; font-weight:700; }
