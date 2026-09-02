@@ -11,6 +11,7 @@ const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({
   '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
 }[c]));
 const norm = v => String(v || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '');
+const imageExt = /\.(png|jpe?g|webp|gif|svg|avif)(?:\?.*)?$/i;
 
 async function json(url, fallback) {
   try {
@@ -30,20 +31,41 @@ async function text(url, fallback = '') {
   }
 }
 
-function imageScore(path, name, gamePath) {
+function rawAsset(path) {
+  return RAW + path.split('/').map(encodeURIComponent).join('/');
+}
+
+// Analiza literalmente el nombre/ruta de CADA imagen encontrada dentro del juego.
+// Se intenta elegir una portada/logo/thumbnail antes que sprites, fondos técnicos o assets pequeños.
+function assetScore(asset, gameName, folder) {
+  const path = asset.path;
   const p = norm(path);
-  const n = norm(name);
-  const base = norm(gamePath.split('/').slice(-2, -1)[0]);
-  let s = 0;
-  if (p.includes('/' + base + '/')) s += 80;
-  if (p.includes('cover')) s += 50;
-  if (p.includes('thumbnail')) s += 45;
-  if (p.includes('banner')) s += 35;
-  if (p.includes('logo')) s += 30;
-  if (p.includes('icon')) s += 25;
-  if (p.includes(n)) s += 25;
-  if (p.endsWith('.png')) s += 5;
-  return s;
+  const file = norm(path.split('/').pop());
+  const name = norm(gameName);
+  const base = norm(folder);
+  let score = 0;
+
+  if (p.includes('/' + base + '/')) score += 100;
+  if (file.includes(name)) score += 60;
+
+  // Nombres que normalmente representan la imagen principal del juego.
+  if (/cover|portada|thumbnail|thumb|preview|banner|hero|poster|card|gamecover/.test(file)) score += 140;
+  if (/logo|logotipo|brand/.test(file)) score += 115;
+  if (/icon|favicon/.test(file)) score += 55;
+  if (/principal|main|front|menu|inicio|start/.test(file)) score += 75;
+
+  // Penalizar assets que no son apropiados como portada.
+  if (/sprite|sprites|tiles|tile|sheet|spritesheet|atlas|texture|textures/.test(file)) score -= 100;
+  if (/background|bg|fondo|wallpaper/.test(file)) score -= 25;
+  if (/player|enemy|enemigo|character|personaje|coin|moneda|button|btn|arrow|heart|life|sound|audio|particle/.test(file)) score -= 70;
+
+  // PNG/JPG/WebP suelen ser los mejores candidatos para una tarjeta.
+  if (/\.png$/i.test(path)) score += 18;
+  if (/\.jpe?g$/i.test(path)) score += 15;
+  if (/\.webp$/i.test(path)) score += 12;
+  if (/\.svg$/i.test(path)) score += 8;
+
+  return score;
 }
 
 function parseIndexImages(html, gamePath) {
@@ -56,7 +78,7 @@ function parseIndexImages(html, gamePath) {
     const raw = rawValue.split(',')[0].trim().split(/\s+/)[0];
     try {
       const u = new URL(raw, RAW + gamePath);
-      if (/\.(png|jpe?g|webp|gif|svg)(\?|$)/i.test(u.pathname)) found.push(u.href);
+      if (imageExt.test(u.pathname)) found.push(u.href);
     } catch {}
   }
   return [...new Set(found)];
@@ -85,20 +107,17 @@ async function discoverGames() {
     const meta = byUrl.get(path) || {};
     const folder = path.split('/')[1];
     let name = meta.name || folder.replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    const html = await text(rawAsset(path), '');
 
-    // IMPORTANTE: index.html es texto, no JSON.
-    const html = await text(RAW + path, '');
     if (html) {
       const title = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.replace(/<[^>]+>/g, '').trim();
       if (title && !meta.name) name = title.replace(/^\p{Extended_Pictographic}\s*/u, '').trim();
     }
 
-    const candidates = tree.filter(x =>
-      x.type === 'blob' &&
-      x.path.startsWith(`games/${folder}/`) &&
-      /\.(png|jpe?g|webp|gif|svg)$/i.test(x.path)
-    );
-
+    // AQUÍ está el cambio principal: no miramos solo unos cuantos nombres.
+    // Recorremos TODOS los blobs que GitHub reporta dentro de la carpeta del juego.
+    const allFiles = tree.filter(x => x.type === 'blob' && x.path.startsWith(`games/${folder}/`));
+    const allImages = allFiles.filter(x => imageExt.test(x.path));
     const htmlImages = parseIndexImages(html, path);
 
     let explicit = '';
@@ -106,14 +125,23 @@ async function discoverGames() {
       try { explicit = new URL(meta.imageUrl, RAW).href; } catch {}
     }
 
-    // Prioridad: imagen declarada por el catálogo -> imagen usada por el juego -> mejor asset original.
-    let image = explicit || htmlImages[0] || '';
-    if (!image && candidates.length) {
-      candidates.sort((a, b) => imageScore(b.path, name, path) - imageScore(a.path, name, path));
-      image = RAW + candidates[0].path;
-    }
+    // Si el propio juego declara una imagen de portada/logo, se le da máxima prioridad.
+    const htmlLocalImages = htmlImages.filter(url => url.includes(`/games/${encodeURIComponent(folder)}/`) || url.includes(`/games/${folder}/`));
+    const ranked = [...allImages].sort((a, b) => assetScore(b, name, folder) - assetScore(a, name, folder));
+    const bestAsset = ranked[0] ? rawAsset(ranked[0].path) : '';
 
-    games.push({ ...meta, name, url: path, image, icon: meta.icon || '🎮' });
+    // Prioridad absoluta: catálogo explícito -> imagen usada en HTML -> mejor asset de TODA la carpeta.
+    const image = explicit || htmlLocalImages[0] || htmlImages[0] || bestAsset || '';
+
+    games.push({
+      ...meta,
+      name,
+      url: path,
+      image,
+      imageSource: explicit ? 'catalog' : htmlImages.length ? 'game-html' : bestAsset ? 'folder-scan' : 'none',
+      assetCount: allImages.length,
+      icon: meta.icon || '🎮'
+    });
   }
 
   const seen = new Set();
@@ -174,6 +202,7 @@ async function init() {
   const games = await discoverGames();
   render(games);
   window.TecnoMathGames = games;
+  console.info('[TecnoMath] Juegos:', games.length, 'Assets analizados por juego:', games.reduce((n, g) => n + (g.assetCount || 0), 0));
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
