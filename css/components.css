@@ -51,7 +51,7 @@
 .tm-spinner { width:18px; height:18px; border:3px solid var(--tm-border); border-top-color:var(--tm-primary); border-radius:50%; animation:tm-spin .8s linear infinite; }
 @keyframes tm-spin { to { transform:rotate(360deg); } }
 
-/* TecnoMath UI 2.0 — capa humana y funcional */
+/* TecnoMath UI 2.0 — producto educativo tipo app */
 .tm-card,.tm-panel,.tm-stat,.tm-game-card,.tm-sidebar { position:relative; }
 .tm-card:hover,.tm-panel:hover,.tm-stat:hover,.tm-game-card:hover { transform:translateY(-2px); box-shadow:0 14px 32px rgba(32,38,46,.11); border-color:color-mix(in srgb,var(--tm-primary) 18%,var(--tm-border)); }
 .tm-btn { position:relative; }
@@ -80,6 +80,16 @@
 .tm-tooltip { position:relative; }
 .tm-tooltip[data-tooltip]::after { content:attr(data-tooltip); position:absolute; left:50%; bottom:calc(100% + 8px); transform:translate(-50%,4px); opacity:0; pointer-events:none; padding:6px 9px; border-radius:7px; white-space:nowrap; background:#20262e; color:#fff; font-size:.75rem; font-weight:700; transition:opacity 160ms ease,transform 160ms ease; }
 .tm-tooltip:hover::after,.tm-tooltip:focus-visible::after { opacity:1; transform:translate(-50%,0); }
+
+/* Contraste adicional para datos, iconos y estados sobre cualquier tema. */
+.tm-stat-label,.tm-loading,.tm-tab { color:var(--tm-muted); }
+.tm-chip { color:var(--tm-text); }
+.tm-xp-icon,.tm-achievement-icon { color:var(--tm-text); }
+.tm-game-card-body { color:var(--tm-text); background:var(--tm-surface); }
+.tm-game-card-body p { color:var(--tm-muted); }
+.tm-sidebar-link { color:var(--tm-text); }
+.tm-table td { color:var(--tm-text); }
+
 @media (max-width:800px) { .tm-sidebar-layout{grid-template-columns:1fr}.tm-sidebar-toggle{display:inline-flex}.tm-sidebar{width:100%;} }
-@media (max-width:640px) { .tm-bottom-nav{display:grid;} body{padding-bottom:78px;} .tm-hero-card{border-radius:16px;} }
+@media (max-width:640px) { .tm-bottom-nav{display:grid;} body{padding-bottom:78px;} .tm-hero-card{border-radius:16px;} .tm-game-card-cover{min-height:150px;} }
 @media (prefers-reduced-motion:reduce) { .tm-card:hover,.tm-panel:hover,.tm-stat:hover,.tm-game-card:hover,.tm-ranking-row:hover{transform:none;} }
