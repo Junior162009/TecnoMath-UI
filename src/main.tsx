@@ -2,6 +2,7 @@ import React, { Component, type ErrorInfo, type ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
 import FigmaApp from './FigmaApp'
 import './index.css'
+import './ui-fixes.css'
 
 type State = { hasError: boolean; message: string }
 
