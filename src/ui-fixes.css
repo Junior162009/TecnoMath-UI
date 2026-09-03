@@ -1,0 +1,92 @@
+/* TecnoMath UI — layout/overlap fixes. Keeps the Figma visual language intact. */
+
+/* Prevent flex/grid children from forcing overflow into neighbouring controls. */
+*, *::before, *::after { min-width: 0; }
+button { white-space: normal; line-height: 1.25; }
+
+/* Buttons stay inside their cards and never collide with long labels. */
+.btn, .btn-primary, .btn-ghost, .filter-btn, .ranking-tabs button, .see-all {
+  min-height: 36px;
+  flex: 0 0 auto;
+}
+.btn-primary.full, .btn-ghost.full, .tour-body .full { display: flex; align-items: center; justify-content: center; gap: 7px; }
+
+/* Game cards: stable height and safe text wrapping. */
+.game-grid { align-items: stretch; }
+.gc { min-width: 0; display: flex; flex-direction: column; }
+.gc > div:last-child { flex: 1; min-width: 0; }
+.gc .oxan, .gc p { overflow-wrap: anywhere; word-break: normal; }
+.gc .chip { max-width: calc(50% - 16px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gc-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Headers/toolbars: controls wrap instead of overlapping. */
+.top-actions { flex-wrap: wrap; min-width: 0; }
+.top-xp, .top-coins { white-space: nowrap; }
+
+/* Search + category filters on the games page. */
+.filters { flex-wrap: wrap; min-width: 0; }
+.page-head h1, .page-head p { overflow-wrap: anywhere; }
+
+/* Ranking rows remain readable on narrower desktop/tablet widths. */
+.leader-row { grid-template-columns: 48px minmax(0,1fr) auto auto; }
+.leader-player { min-width: 0; }
+.leader-player strong { overflow-wrap: anywhere; }
+
+/* Tournament prize labels may be long; wrap cleanly rather than collide. */
+.tour-prizes { flex-wrap: wrap; row-gap: 8px; column-gap: 16px; }
+.tour-prizes span { min-width: 0; overflow-wrap: anywhere; }
+
+/* Community composer and rows. */
+.compose { align-items: center; }
+.compose button { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.online-row > div:not(.odot) { min-width: 0; }
+.online-row b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Keep two-column sections from collapsing into overlaps. */
+.two-col-home, .progress-grid, .community-layout, .tour-grid { min-width: 0; }
+
+/* Tablet / small laptop. */
+@media (max-width: 1180px) {
+  .content { padding-left: 22px; padding-right: 22px; }
+  .game-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ach-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hero h1 { font-size: 34px; }
+}
+
+@media (max-width: 900px) {
+  .sidebar { width: 220px; flex-basis: 220px; }
+  .topbar { padding: 0 18px; }
+  .content { padding: 20px 18px 40px; }
+  .game-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .two-col-home, .progress-grid, .community-layout, .tour-grid { grid-template-columns: 1fr; }
+  .leader-row { grid-template-columns: 42px minmax(0,1fr) auto; }
+  .leader-row > span:last-child { display: none; }
+}
+
+@media (max-width: 680px) {
+  body { overflow: hidden; }
+  .sidebar { display: none; }
+  .mobile-menu { display: inline-flex !important; }
+  .topbar { height: 58px; flex-basis: 58px; padding: 0 12px; gap: 8px; }
+  .top-search { max-width: none; }
+  .top-actions { gap: 8px; }
+  .top-actions .top-xp, .top-actions .top-coins { display: none; }
+  .content { padding: 16px 12px 32px; }
+  .hero { min-height: 0; }
+  .hero-inner { padding: 30px 22px; }
+  .hero h1 { font-size: 29px; }
+  .hero p { font-size: 13px; }
+  .hero-actions { flex-wrap: wrap; }
+  .hero-actions > button { flex: 1 1 170px; }
+  .stat-grid, .game-grid, .ach-grid { grid-template-columns: 1fr; }
+  .page-head { margin-bottom: 18px; }
+  .page-head h1 { font-size: 24px; }
+  .podium { gap: 8px; }
+  .podium-col { width: min(30vw, 150px); }
+  .leader-row { padding: 11px 12px; gap: 7px; }
+  .tour-prizes { gap: 8px; }
+}
+
+/* Figma app starts with the mobile menu hidden on desktop. */
+.mobile-menu { display: none; }
